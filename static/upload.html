@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>圖片上傳</title>
 </head>
@@ -19,21 +20,15 @@
 
     document.getElementById('downloadTemplate').addEventListener('click', function () {
       // const imageUrl = '你的圖片網址.jpg'; // 替換成你的圖片網址
-      const imageUrl = "/pictures/filletsteak_cloth_template.png";
+      const imageUrl = "./pictures/filletsteak_cloth_template.png";
       const imageName = 'filletsteak_cloth_template.png'; // 設定下載檔案名稱
 
-      fetch(imageUrl)
-        .then(response => response.blob())
-        .then(blob => {
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = imageName; // 設定下載檔案名稱
-          document.body.appendChild(a);
-          a.click();
-          window.URL.revokeObjectURL(url); // 釋放資源
-          document.body.removeChild(a);
-        });
+      const a = document.createElement('a');
+      a.href = imageUrl;
+      a.download = imageName; // 設定下載檔案名稱
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     });
 
     function handleFileSelect(event) {
@@ -96,4 +91,5 @@
     }
   </script>
 </body>
+
 </html>
