@@ -52,8 +52,9 @@
       const file = fileInput.files[0];
       const formData = new FormData();
       formData.append('file', file);
-
-      fetch('http://127.0.0.1:8088/upload', { // 替換成你的上傳 API
+      // http://127.0.0.1:8088/upload
+      // http://ehci.meyselfnas.com:8088/upload
+      fetch('http://ehci.myselfnas.com:8088/upload', { // 替換成你的上傳 API
         method: 'POST',
         body: formData
       })
