@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <title>圖片上傳</title>
 </head>
@@ -9,12 +8,33 @@
   <h1>圖片上傳</h1>
   <input type="file" id="fileInput" accept="image/*">
   <button id="uploadButton" disabled>上傳</button>
+  <button id="downloadTemplate">下載樣板</button>
+
   <script>
     const max = 8192;
     const fileInput = document.getElementById('fileInput');
     const uploadButton = document.getElementById('uploadButton');
 
     fileInput.addEventListener('change', handleFileSelect);
+
+    document.getElementById('downloadTemplate').addEventListener('click', function () {
+      // const imageUrl = '你的圖片網址.jpg'; // 替換成你的圖片網址
+      const imageUrl = "/pictures/filletsteak_cloth_template.png";
+      const imageName = 'filletsteak_cloth_template.png'; // 設定下載檔案名稱
+
+      fetch(imageUrl)
+        .then(response => response.blob())
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = imageName; // 設定下載檔案名稱
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url); // 釋放資源
+          document.body.removeChild(a);
+        });
+    });
 
     function handleFileSelect(event) {
       const file = event.target.files[0];
@@ -54,7 +74,7 @@
       formData.append('file', file);
       // http://127.0.0.1:8085/upload
       // http://ehci.meyselfnas.com:8085/upload
-      fetch('https://ehci.myselfnas.com:8085/upload', { // 替換成你的上傳 API
+      fetch('https://ehci.direct.quickconnect.to:8085/upload', { // 替換成你的上傳 API
         method: 'POST',
         body: formData
       })
@@ -76,6 +96,4 @@
     }
   </script>
 </body>
-
-
 </html>
