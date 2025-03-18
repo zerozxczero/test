@@ -28,7 +28,7 @@
     // 檢查檔案大小 (單位：bytes)
     const maxSize = 1 * max * max; // 1MB
     if (file.size > maxSize) {
-      alert(`圖片大小超過限制 (${maxSize/1024}MB)`);
+      alert(`圖片大小超過限制 (${maxSize / 1024}MB)`);
       uploadButton.disabled = true;
       return;
     }
@@ -55,13 +55,17 @@
     const formData = new FormData();
     formData.append('file', file);
 
-    fetch('/upload', { // 替換成你的上傳 API
+    fetch('http://127.0.0.1:8088/upload', { // 替換成你的上傳 API
       method: 'POST',
       body: formData
     })
       .then(response => {
         if (response.ok) {
           alert('上傳成功！');
+          // 顯示圖片
+          const img = document.createElement('img');
+          img.src = URL.createObjectURL(file);
+          document.body.appendChild(img); // 將圖片添加到網頁中
         } else {
           alert('上傳失敗！');
         }
