@@ -9,73 +9,72 @@
   <h1>圖片上傳</h1>
   <input type="file" id="fileInput" accept="image/*">
   <button id="uploadButton" disabled>上傳</button>
-  <script src="script.js"></script>
-</body>
-<script>
-  const max = 4096
-  const fileInput = document.getElementById('fileInput');
-  const uploadButton = document.getElementById('uploadButton');
+  <script>
+    const max = 8192;
+    const fileInput = document.getElementById('fileInput');
+    const uploadButton = document.getElementById('uploadButton');
 
-  fileInput.addEventListener('change', handleFileSelect);
+    fileInput.addEventListener('change', handleFileSelect);
 
-  function handleFileSelect(event) {
-    const file = event.target.files[0];
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
 
-    if (!file) {
-      return;
-    }
-
-    // 檢查檔案大小 (單位：bytes)
-    const maxSize = 1 * max * max; // 1MB
-    if (file.size > maxSize) {
-      alert(`圖片大小超過限制 (${maxSize / 1024}MB)`);
-      uploadButton.disabled = true;
-      return;
-    }
-
-    // 檢查圖片尺寸
-    const img = new Image();
-    img.onload = function () {
-      const maxWidth = max;
-      const maxHeight = max;
-      if (img.width > maxWidth || img.height > maxHeight) {
-        alert(`圖片尺寸超過限制 (${maxWidth}x${maxHeight})`);
-        uploadButton.disabled = true;
-      } else {
-        uploadButton.disabled = false;
+      if (!file) {
+        return;
       }
-    };
-    img.src = URL.createObjectURL(file);
-  }
 
-  uploadButton.addEventListener('click', uploadFile);
+      // 檢查檔案大小 (單位：bytes)
+      const maxSize = 1 * max * max; // 1MB
+      if (file.size > maxSize) {
+        alert(`圖片大小超過限制 (${maxSize / 1024}MB)`);
+        uploadButton.disabled = true;
+        return;
+      }
 
-  function uploadFile() {
-    const file = fileInput.files[0];
-    const formData = new FormData();
-    formData.append('file', file);
-
-    fetch('http://127.0.0.1:8088/upload', { // 替換成你的上傳 API
-      method: 'POST',
-      body: formData
-    })
-      .then(response => {
-        if (response.ok) {
-          alert('上傳成功！');
-          // 顯示圖片
-          const img = document.createElement('img');
-          img.src = URL.createObjectURL(file);
-          document.body.appendChild(img); // 將圖片添加到網頁中
+      // 檢查圖片尺寸
+      const img = new Image();
+      img.onload = function () {
+        const maxWidth = max;
+        const maxHeight = max;
+        if (img.width > maxWidth || img.height > maxHeight) {
+          alert(`圖片尺寸超過限制 (${maxWidth}x${maxHeight})`);
+          uploadButton.disabled = true;
         } else {
-          alert('上傳失敗！');
+          uploadButton.disabled = false;
         }
-      })
-      .catch(error => {
-        console.error('上傳錯誤:', error);
-        alert('上傳發生錯誤！');
-      });
-  }
+      };
+      img.src = URL.createObjectURL(file);
+    }
 
-</script>
+    uploadButton.addEventListener('click', uploadFile);
+
+    function uploadFile() {
+      const file = fileInput.files[0];
+      const formData = new FormData();
+      formData.append('file', file);
+
+      fetch('http://127.0.0.1:8088/upload', { // 替換成你的上傳 API
+        method: 'POST',
+        body: formData
+      })
+        .then(response => {
+          if (response.ok) {
+            alert('上傳成功！');
+            // 顯示圖片
+            // const img = document.createElement('img');
+            // img.src = URL.createObjectURL(file);
+            // document.body.appendChild(img); // 將圖片添加到網頁中
+          } else {
+            alert('上傳失敗！');
+          }
+        })
+        .catch(error => {
+          console.error('上傳錯誤:', error);
+          alert(`上傳發生錯誤！${error}`);
+        });
+    }
+  </script>
+</body>
+
 
 </html>
