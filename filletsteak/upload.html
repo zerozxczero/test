@@ -21,6 +21,8 @@
   <button id="downloadTemplate">下載樣板</button>
 
   <script>
+    // 未來可能需要將參數資料與設定開成 api 這樣可以使用後台熱更，不用寫在 js 內，不然每次要改靜態js資料就要重新push一次跟測試
+    // 統一改為 api 熱更
     const upload_cloth_image_api = "https://ehci.direct.quickconnect.to:8085/api/upload"
     const upload_error_message = "不符合樣板規格，請使用樣板做修改。"
     const max = 2048;
@@ -32,7 +34,7 @@
 
     document.getElementById('downloadTemplate').addEventListener('click', function () {
       // const imageUrl = '你的圖片網址.jpg'; // 替換成你的圖片網址
-      const imageUrl = "./static/images/filletsteak_cloth_template.png";
+      const imageUrl = "./filletsteak/images/filletsteak_cloth_template.png";
       const imageName = 'filletsteak_cloth_template.png'; // 設定下載檔案名稱
 
       const a = document.createElement('a');
