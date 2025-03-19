@@ -3,33 +3,10 @@
 
 <head>
   <title>圖片上傳</title>
-  <style>
-    .input-container {
-      width: 300px;
-      /* 設定初始寬度 */
-      border: 1px solid #ccc;
-      overflow-x: auto;
-      /* 超過寬度時顯示水平拉條 */
-      overflow-y: hidden;
-      /* 初始隱藏垂直拉條 */
-      resize: vertical;
-      /* 允許垂直調整大小 */
-    }
-
-    .scrollable-input {
-      width: 100%;
-      border: none;
-      outline: none;
-      resize: none;
-      /* 禁止使用者調整大小 */
-      overflow: hidden;
-      /* 隱藏內部垂直拉條 */
-      box-sizing: border-box;
-      /* 包含 padding 和 border 在寬度計算中 */
-      font-size: 16px;
-      padding: 5px;
-    }
-  </style>
+  <head>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="images/favicon.webp" type="image/webp">
+  </head>
 </head>
 
 <body>
@@ -38,37 +15,24 @@
   <!-- <div class="input-container">
     <textarea class="scrollable-input" id="myInput"></textarea>
   </div> -->
-  
+
   <input type="file" id="fileInput" accept="image/*">
   <button id="uploadButton" disabled>上傳</button>
   <button id="downloadTemplate">下載樣板</button>
 
-  <!-- <div class="input-container">
-    <input type="text" class="scrollable-input" value="這是一個很長的文字，超過input寬度時會出現拉條。">
-  </div> -->
-
-
   <script>
-    const input = document.getElementById('myInput');
-
-    input.addEventListener('input', function () {
-      this.style.height = 'auto'; // 先重置高度
-      this.style.height = (this.scrollHeight) + 'px'; // 根據內容調整高度
-    });
-  </script>
-
-  <script>
+    const upload_cloth_image_api = "https://ehci.direct.quickconnect.to:8085/api/upload"
+    const upload_error_message = "不符合樣板規格，請使用樣板做修改。"
     const max = 2048;
     const maxWidth = 1000;
     const maxHeight = 1000;
     const fileInput = document.getElementById('fileInput');
     const uploadButton = document.getElementById('uploadButton');
-
     fileInput.addEventListener('change', handleFileSelect);
 
     document.getElementById('downloadTemplate').addEventListener('click', function () {
       // const imageUrl = '你的圖片網址.jpg'; // 替換成你的圖片網址
-      const imageUrl = "./static/pictures/filletsteak_cloth_template.png";
+      const imageUrl = "./static/images/filletsteak_cloth_template.png";
       const imageName = 'filletsteak_cloth_template.png'; // 設定下載檔案名稱
 
       const a = document.createElement('a');
@@ -89,7 +53,8 @@
       // 檢查檔案大小 (單位：bytes)
       const maxSize = 1 * max * max; // 1MB
       if (file.size > maxSize) {
-        alert(`圖片大小超過限制 (${maxSize / 1024}MB)`);
+        // alert(`圖片大小超過限制 (${maxSize / 1024}MB)`);
+        alert(`${upload_error_message}`);
         uploadButton.disabled = true;
         return;
       }
@@ -98,7 +63,8 @@
       const img = new Image();
       img.onload = function () {
         if (img.width > maxWidth || img.height > maxHeight) {
-          alert(`圖片尺寸超過限制 (${maxWidth}x${maxHeight})`);
+          // alert(`圖片尺寸超過限制 (${maxWidth}x${maxHeight})`);
+          alert(`${upload_error_message}`);
           uploadButton.disabled = true;
         } else {
           uploadButton.disabled = false;
@@ -115,7 +81,7 @@
       formData.append('file', file);
       // http://127.0.0.1:8085/upload
       // http://ehci.meyselfnas.com:8085/upload
-      fetch('https://ehci.direct.quickconnect.to:8085/upload_api', { // 替換成你的上傳 API
+      fetch(upload_cloth_image_api, { // 替換成你的上傳 API
         method: 'POST',
         body: formData
       })
