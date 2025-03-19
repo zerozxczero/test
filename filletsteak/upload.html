@@ -3,16 +3,63 @@
 
 <head>
   <title>圖片上傳</title>
+  <style>
+    .input-container {
+      width: 300px;
+      /* 設定初始寬度 */
+      border: 1px solid #ccc;
+      overflow-x: auto;
+      /* 超過寬度時顯示水平拉條 */
+      overflow-y: hidden;
+      /* 初始隱藏垂直拉條 */
+      resize: vertical;
+      /* 允許垂直調整大小 */
+    }
+
+    .scrollable-input {
+      width: 100%;
+      border: none;
+      outline: none;
+      resize: none;
+      /* 禁止使用者調整大小 */
+      overflow: hidden;
+      /* 隱藏內部垂直拉條 */
+      box-sizing: border-box;
+      /* 包含 padding 和 border 在寬度計算中 */
+      font-size: 16px;
+      padding: 5px;
+    }
+  </style>
 </head>
 
 <body>
   <h1>圖片上傳</h1>
+  <div class="input-container">
+    <textarea class="scrollable-input" id="myInput"></textarea>
+  </div>
+  
   <input type="file" id="fileInput" accept="image/*">
   <button id="uploadButton" disabled>上傳</button>
   <button id="downloadTemplate">下載樣板</button>
 
+  <!-- <div class="input-container">
+    <input type="text" class="scrollable-input" value="這是一個很長的文字，超過input寬度時會出現拉條。">
+  </div> -->
+
+
   <script>
-    const max = 8192;
+    const input = document.getElementById('myInput');
+
+    input.addEventListener('input', function () {
+      this.style.height = 'auto'; // 先重置高度
+      this.style.height = (this.scrollHeight) + 'px'; // 根據內容調整高度
+    });
+  </script>
+
+  <script>
+    const max = 2048;
+    const maxWidth = 1000;
+    const maxHeight = 1000;
     const fileInput = document.getElementById('fileInput');
     const uploadButton = document.getElementById('uploadButton');
 
@@ -20,7 +67,7 @@
 
     document.getElementById('downloadTemplate').addEventListener('click', function () {
       // const imageUrl = '你的圖片網址.jpg'; // 替換成你的圖片網址
-      const imageUrl = "./pictures/filletsteak_cloth_template.png";
+      const imageUrl = "./static/pictures/filletsteak_cloth_template.png";
       const imageName = 'filletsteak_cloth_template.png'; // 設定下載檔案名稱
 
       const a = document.createElement('a');
@@ -49,8 +96,6 @@
       // 檢查圖片尺寸
       const img = new Image();
       img.onload = function () {
-        const maxWidth = max;
-        const maxHeight = max;
         if (img.width > maxWidth || img.height > maxHeight) {
           alert(`圖片尺寸超過限制 (${maxWidth}x${maxHeight})`);
           uploadButton.disabled = true;
